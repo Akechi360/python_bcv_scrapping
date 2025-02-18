@@ -163,7 +163,7 @@ Para automatizar la ejecución del script Python con el Programador de tareas de
    * Copia y pega el siguiente código en el Bloc de notas:
 ```
 @echo off
-"C:\Program Files\Python311\python.exe" "C:\Users\AnalistaIT\Desktop\TASA BCV\TASABCV.py"
+"C:\Program Files\Python311\python.exe" "C:\Users\USUARIO\Desktop\TASA BCV\TASABCV.py"
 pause
 
 ```
@@ -192,3 +192,106 @@ Navega hasta la carpeta donde guardaste el archivo .bat con el Explorador de arc
     Debería abrirse brevemente una ventana de comandos y luego cerrarse (si no has incluido la línea pause).
      Verifica que se haya creado o actualizado el archivo Excel tasa_dolar_bcv.xlsx en la misma carpeta. Abre el archivo Excel y confirma que la fecha y el valor de la tasa del BCV se hayan guardado correctamente.
 ```
+Automatización con el Programador de Tareas de Windows
+
+Ahora, utilizaremos el Programador de tareas de Windows para ejecutar el archivo .bat automáticamente de forma periódica.
+
+    Abre el Programador de tareas:  Busca "Programador de tareas" en el menú Inicio de Windows y ejecútalo.
+
+    Crear tarea básica...: En el panel de "Acciones" (a la derecha), haz clic en "Crear tarea básica...".
+    Imagen de Windows Task Scheduler interface highlighting the Crear tarea básica... option in the Actions panelSe abre en una ventana nueva
+    www.wisecleaner.com
+    Windows Task Scheduler interface highlighting the Crear tarea básica... option in the Actions panel
+
+    Nombre y Descripción:**
+        Nombre: Escribe un nombre descriptivo para la tarea (ej: Actualizar Tasa BCV Excel).
+        Descripción: (Opcional) Escribe una descripción para la tarea (ej: Ejecuta script Python para obtener y guardar la tasa del BCV en Excel.).
+        Haz clic en "Siguiente >".
+        Imagen de Windows Task Scheduler Create Basic Task wizard Name and Description step with example name and description filled inSe abre en una ventana nueva
+        www.xda-developers.com
+        Windows Task Scheduler Create Basic Task wizard Name and Description step with example name and description filled in 
+
+    Desencadenador (Programación):
+        En "Desencadenador", selecciona la frecuencia con la que quieres ejecutar el script. Recomendamos "Diariamente" para actualizar la tasa del BCV a diario.
+        Configura la "Hora de inicio" (la hora del día a la que quieres que se ejecute el script) y asegúrate de que esté configurado para "Repetir cada: 1 día" si eliges "Diariamente". Configura las opciones según la frecuencia deseada.
+        Haz clic en "Siguiente >".
+        Imagen de Windows Task Scheduler Create Basic Task wizard Trigger step highlighting Daily option and example start time setSe abre en una ventana nueva
+        www.digitalcitizen.life
+        Windows Task Scheduler Create Basic Task wizard Trigger step highlighting Daily option and example start time set 
+
+    Acción: Iniciar un programa:
+
+        Asegúrate de que esté seleccionada la opción "Iniciar un programa".
+
+        Programa o script:  Escribe la ruta completa al archivo .bat que creaste (ej: "C:\Users\USUARIO\Desktop\TASA BCV\ejecutar_tasa_bcv.bat"). ¡Incluye las comillas dobles " alrededor de la ruta!
+
+        [Image of Windows Task Scheduler "Create Basic Task" wizard - Action step highlighting "Start a program" option and showing example .bat file path in "Program/script" field, enclosed in double quotes: "C:\Users\USUARIO\Desktop\TASA BCV\ejecutar_tasa_bcv.bat"]
+
+        Agregar argumentos (opcional):  Deja este campo COMPLETAMENTE VACÍO.
+
+        Iniciar en (opcional):  Escribe la ruta completa a la CARPETA que contiene el archivo .bat, el .py y el .xlsx (ej: C:\Users\USUARIO\Desktop\TASA BCV).  ¡IMPORTANTE:  NO  INCLUYAS  COMILLAS  DOBLES  EN  ESTE  CAMPO!  Escribe solo la ruta de la carpeta.
+
+        [Image of Windows Task Scheduler "Edit Action" window, highlighting the "Start in (optional)" field and showing example folder path: C:\Users\USUARIO\Desktop\TASA BCV]
+
+        Haz clic en "Siguiente >".
+
+    Finalizar:
+        Revisa la configuración de la tarea en la ventana "Finalizar".
+        Haz clic en "Finalizar" para crear la tarea programada.
+
+    Configuración Adicional (Pestaña "General" de la tarea):
+        Localiza la tarea "Actualizar Tasa BCV Excel" en la lista del Programador de tareas.
+        Haz clic derecho sobre la tarea y elige "Propiedades".
+        Pestaña "General":
+            Cuenta de usuario: Asegúrate de que esté seleccionada TU cuenta de usuario de Windows. Haz clic en "Cambiar usuario..." si es necesario y selecciona tu cuenta.
+            Marca las casillas: "Ejecutar con los privilegios más elevados" y "Ejecutar tanto si el usuario inició sesión como si no" (opcional, pero recomendado para mayor flexibilidad).
+            Configurar para: Selecciona tu versión de Windows (ej: "Windows 10").
+        Haz clic en "Aceptar" para guardar los cambios en las propiedades de la tarea.
+        Imagen de Windows Task Scheduler Task Properties window, General tab, highlighting the User account, Run whether user is logged on or not, Run with highest privileges options and Configure for dropdownSe abre en una ventana nueva
+        superuser.com
+        Windows Task Scheduler Task Properties window, General tab, highlighting the User account, Run whether user is logged on or not, Run with highest privileges options and Configure for dropdown 
+
+    Probar la tarea programada manualmente:
+        En el Programador de tareas, busca tu tarea "Actualizar Tasa BCV Excel".
+        Haz clic derecho sobre la tarea y elige "Ejecutar".
+        Espera unos minutos a que se ejecute el script.
+        Verifica que el archivo Excel tasa_dolar_bcv.xlsx se haya actualizado correctamente con la fecha y el valor más reciente de la tasa del BCV. Abre el archivo Excel para confirmar.
+
+¡Felicidades!  Has automatizado con éxito la obtención y el registro de la tasa de cambio del BCV en un archivo Excel utilizando Python y el Programador de tareas de Windows.  Ahora, tu script se ejecutará automáticamente según la programación que hayas definido, manteniendo tu archivo Excel actualizado sin necesidad de intervención manual.
+6. Consideraciones Adicionales y Personalización (Opcional)
+
+    Personalización del código Python:  Puedes modificar el script TASABCV.py para:
+        Cambiar el nombre del archivo Excel (EXCEL_FILENAME), la hoja de cálculo (SHEET_NAME), o las celdas de destino (CELL_FECHA, CELL_VALOR).
+        Añadir más información al archivo Excel, como la fuente de los datos, la hora de la consulta, u otros datos de la API.
+        Mejorar el manejo de errores para hacer el script más robusto.
+        Implementar un sistema de registro (logging) para guardar información sobre cada ejecución del script.
+        Enviar notificaciones por correo electrónico o a través de otros servicios en caso de éxito o error en la ejecución del script.
+
+    Automatización en otros sistemas operativos:  Aunque esta guía se centra en el Programador de tareas de Windows, puedes adaptar el script Python para automatizarlo en otros sistemas operativos utilizando herramientas como cron en Linux o launchd en macOS.
+
+7. Solución de Problemas y Preguntas Frecuentes (FAQ)
+
+P: El archivo Excel no se actualiza cuando se ejecuta la tarea programada, aunque el archivo .bat funciona bien manualmente.
+
+R: Este es un problema común y suele estar relacionado con la configuración del "Programador de tareas".  Verifica lo siguiente:
+
+    "Iniciar en (opcional)" en la acción de la tarea: Asegúrate de haber escrito la ruta a la carpeta en el campo "Iniciar en (opcional)" en la pestaña "Acciones" de la tarea, y ¡MUY IMPORTANTE!, de NO HABER INCLUIDO COMILLAS DOBLES en este campo. Escribe solo la ruta de la carpeta sin comillas. Ejemplo correcto: C:\Users\USUARIO\Desktop\TASA BCV (sin comillas). Este fue el problema que solucionamos en esta guía.
+    "Cuenta de usuario" en la pestaña "General": Verifica que la tarea esté configurada para ejecutarse con TU cuenta de usuario de Windows. Cambia la "Cuenta de usuario" a tu nombre de usuario si es necesario y marca la casilla "Ejecutar con los privilegios más elevados".
+    Directorio de trabajo incorrecto: Si el "Iniciar en (opcional)" no está configurado correctamente, el script Python podría no encontrar el archivo Excel o no tener permisos para escribir en la carpeta.
+    Permisos de acceso a la carpeta o al archivo Excel: Asegúrate de que tu cuenta de usuario de Windows tenga permisos de lectura y escritura en la carpeta donde se guardan el script Python y el archivo Excel.
+
+P: Veo un error KeyError: 'data' al ejecutar el script Python.
+
+R:  Este error indica que el script no puede encontrar la clave 'data' dentro de la información que devuelve la API del BCV.  Esto se debe a que la estructura de la respuesta de la API no coincide con lo que el código esperaba inicialmente.  Solución: Modifica la función escribir_en_excel_local() en el código Python para acceder directamente a las claves correctas en la respuesta de la API, que son 'fechaActualizacion' y 'promedio'.  Asegúrate de que tu código Python tenga las siguientes líneas corregidas:
+Python
+
+    fecha = data['fechaActualizacion']
+    valor = data['promedio']
+
+P: La ventana de comandos del archivo .bat se abre y se cierra muy rápido y no veo si hay errores.
+
+R:  Si quieres que la ventana de comandos se mantenga abierta para ver la salida o posibles errores,  añade la línea pause al final del archivo .bat.  Esto hará que la ventana se pause y espere a que presiones una tecla antes de cerrarse.  Recuerda quitar la línea pause una vez que hayas terminado de depurar y estés seguro de que el script funciona correctamente si prefieres que la ventana se cierre automáticamente.
+
+P: ¿Cómo puedo cambiar la frecuencia con la que se ejecuta el script automáticamente?
+
+R:  Para cambiar la programación de la tarea (ej: ejecutarla cada hora, semanalmente, etc.), abre el Programador de tareas, localiza tu tarea "Actualizar Tasa BCV Excel", haz clic derecho y elige "Propiedades".  Ve a la pestaña "Desencadenadores".  Allí puedes editar el desencadenador existente (ej: "Diariamente") para cambiar la hora de inicio o la frecuencia, o crear un nuevo desencadenador con una programación diferente (ej: "Semanalmente").  Asegúrate de que el desencadenador que quieras usar esté "Habilitado".
