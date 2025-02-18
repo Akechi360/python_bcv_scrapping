@@ -46,7 +46,7 @@ import os
 # Información de la API y archivo Excel
 API_URL = "ve.dolarapi.com"
 API_ENDPOINT = "/v1/dolares/oficial"
-EXCEL_FILENAME = "tasa_dolar_bcv.xlsx"
+EXCEL_FILENAME = "TASABCV.xlsx"
 SHEET_NAME = "TasaBCV"
 CELL_FECHA = "A1"
 CELL_VALOR = "B1"
@@ -102,3 +102,93 @@ if __name__ == '__main__':
         print("Datos escritos exitosamente en archivo Excel local.")
     else:
         print("No se pudieron obtener los datos de la API.")
+
+```
+Explicación del código:
+
+Importaciones:
+        import http.client: Biblioteca para hacer peticiones HTTP a la API.
+        import json: Biblioteca para trabajar con datos en formato JSON que devuelve la API.
+        import openpyxl: Biblioteca para leer y escribir archivos de Excel (.xlsx).
+        import os: Biblioteca para interactuar con el sistema operativo, en este caso, para verificar si el archivo Excel existe.
+
+- Variables de Configuración:
+        API_URL = "ve.dolarapi.com" y API_ENDPOINT = "/v1/dolares/oficial": Definen la URL base y el punto final de la API del BCV que vamos a consultar.
+        EXCEL_FILENAME = "tasa_dolar_bcv.xlsx": Nombre del archivo Excel que se creará (o se actualizará) en la misma carpeta que el script Python.
+        SHEET_NAME = "TasaBCV": Nombre de la hoja de cálculo dentro del archivo Excel donde se guardarán los datos.
+        CELL_FECHA = "A1" y CELL_VALOR = "B1": Celdas específicas dentro de la hoja de cálculo donde se escribirán la fecha y el valor de la tasa del BCV. Puedes cambiar estas variables si deseas guardar los datos en otras celdas.
+
+- Función obtener_dolar_oficial():
+        Establece una conexión HTTPS a la API del BCV (API_URL).
+        Realiza una petición GET al punto final /v1/dolares/oficial (API_ENDPOINT).
+        Recibe la respuesta de la API en formato JSON.
+        Decodifica la respuesta JSON y la devuelve como un diccionario de Python.
+
+- Función escribir_en_excel_local(data, excel_filename, sheet_name, cell_fecha, cell_valor):
+     * Recibe los datos de la API (data), el nombre del archivo Excel, el nombre de la hoja y las celdas de               destino como argumentos.
+     
+     * Extrae la fecha de actualización y el valor de la tasa del BCV del diccionario data: fecha =                       data['fechaActualizacion'] y valor = data['promedio']. Importante: Se accede directamente a las claves             'fechaActualizacion' y 'promedio' que están presentes en la respuesta de la API.
+     
+     * Verifica si el archivo Excel existe: Utiliza os.path.exists() para comprobar si el archivo especificado            en excel_filename ya existe en la misma carpeta que el script.
+     
+     * Carga o crea el libro de trabajo Excel:
+       Si el archivo Excel existe, lo abre (openpyxl.load_workbook()).
+       Si el archivo Excel no existe, crea un nuevo libro de trabajo (openpyxl.Workbook()).
+
+     * Crea o selecciona la hoja de cálculo:
+       Si la hoja con el nombre sheet_name existe dentro del libro de trabajo, la selecciona.
+       Si la hoja no existe, crea una nueva hoja con el nombre sheet_name y la selecciona como hoja activa.
+
+     * Escribe los datos en las celdas: Escribe la fecha en la celda especificada por cell_fecha y el valor en la         celda especificada por cell_valor dentro de la hoja de cálculo seleccionada.
+
+     * Guarda el archivo Excel: Guarda los cambios en el archivo Excel utilizando workbook.save(excel_filename).          Imprime un mensaje de éxito o error en la consola.
+
+- Bloque if __name__ == '__main__':
+     * Este bloque de código se ejecuta solo cuando el script se ejecuta directamente (no cuando se importa como          un módulo).
+
+     * Llama a la función obtener_dolar_oficial() para obtener los datos de la API.
+        Si los datos se obtienen correctamente:
+            Imprime los datos de la API en la consola (para verificar).
+            Llama a la función escribir_en_excel_local() para guardar los datos en el archivo Excel local.
+            Imprime un mensaje de éxito.
+        Si no se pueden obtener los datos de la API, imprime un mensaje de error.
+
+```
+```
+Creación del Archivo .bat (ejecutar_tasa_bcv.bat)
+Para automatizar la ejecución del script Python con el Programador de tareas de Windows, crearemos un archivo .bat (archivo por lotes) que contiene el comando para ejecutar el script.
+
+   * Abre el Bloc de notas de Windows.
+
+   * Copia y pega el siguiente código en el Bloc de notas:
+```
+@echo off
+"C:\Program Files\Python311\python.exe" "C:\Users\AnalistaIT\Desktop\TASA BCV\TASABCV.py"
+pause
+
+```
+¡Importante! Reemplaza las rutas de ejemplo con las rutas CORRECTAS de tu sistema:
+
+  C:\Program Files\Python311\python.exe: Reemplaza esto con la ruta completa al ejecutable de Python en tu computadora.  Puedes encontrar esta ruta ejecutando el comando where python o where python3 en el Símbolo del sistema o PowerShell.  Asegúrate de que la ruta sea correcta y que el archivo python.exe realmente exista en esa ubicación.
+
+  C:\Users\USUARIO\Desktop\TASA BCV\TASABCV.py: Reemplaza esto con la ruta completa al archivo TASABCV.py que creaste en el paso anterior. Guarda el archivo TASABCV.py en una carpeta de tu elección (por ejemplo, Desktop\TASA BCV).  Luego, copia la ruta completa a ese archivo y reemplaza la ruta de ejemplo en el archivo .bat.
+
+¡Asegúrate de mantener las comillas dobles " alrededor de AMBAS rutas si contienen espacios!
+
+La línea pause al final es opcional. Se utiliza para mantener la ventana de comandos abierta después de ejecutar el script, para que puedas ver si hay algún mensaje de error (útil para depuración).  Puedes quitar la línea pause una vez que estés seguro de que el script funciona correctamente.
+
+Guarda el archivo .bat:
+
+   Haz clic en "Archivo" -> "Guardar como..." en el Bloc de notas.
+    Navega hasta la misma carpeta donde guardaste el archivo TASABCV.py (C:\Users\AnalistaIT\Desktop\TASA BCV en este ejemplo).
+    En "Nombre de archivo:", escribe un nombre descriptivo para el archivo .bat terminado en .bat (ej: ejecutar_tasa_bcv.bat).
+    En "Guardar como tipo:", selecciona "Todos los archivos (.)". ¡Esto es crucial para que el archivo se guarde como .bat y no como .txt!
+    Haz clic en "Guardar".
+
+Prueba el archivo .bat manualmente:
+
+Navega hasta la carpeta donde guardaste el archivo .bat con el Explorador de archivos de Windows.
+  Haz doble clic en el archivo .bat (ej: ejecutar_tasa_bcv.bat).
+    Debería abrirse brevemente una ventana de comandos y luego cerrarse (si no has incluido la línea pause).
+     Verifica que se haya creado o actualizado el archivo Excel tasa_dolar_bcv.xlsx en la misma carpeta. Abre el archivo Excel y confirma que la fecha y el valor de la tasa del BCV se hayan guardado correctamente.
+```
